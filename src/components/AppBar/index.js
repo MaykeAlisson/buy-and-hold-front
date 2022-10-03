@@ -30,7 +30,11 @@ function DrawerAppBar(props) {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                Buy Hold
+                <Button key={'BuyHold'} onClick={() => {
+                    navigate('/')
+                }}>
+                    Buy Hold
+                </Button>
             </Typography>
             <Divider />
             <List>
@@ -78,7 +82,11 @@ function DrawerAppBar(props) {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        Buy Hold
+                        <Button key={'BuyHold'} sx={{ color: '#fff' }} onClick={() => {
+                            navigate('/')
+                        }}>
+                            Buy Hold
+                        </Button>
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Button key={'Assert'} sx={{ color: '#fff' }} onClick={() => {
