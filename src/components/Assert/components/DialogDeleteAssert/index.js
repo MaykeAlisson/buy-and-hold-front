@@ -5,10 +5,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import Typography from '@mui/material/Typography';
 
 import PropTypes from "prop-types";
 
-const Componente = ({open, onClose}) => {
+const Componente = ({open, onClose, assert}) => {
 
     return (
         <Dialog
@@ -16,15 +17,17 @@ const Componente = ({open, onClose}) => {
           maxWidth="xs"
           open={open}
         >
-        <DialogTitle>Atualizar Assert</DialogTitle>
+        <DialogTitle>Deletar Assert</DialogTitle>
           <DialogContent dividers>
-          <h3>Form</h3>
+          <Typography variant="h6" gutterBottom style={{'color': 'red'}}>
+            Deletar Assert {assert.nome} ?
+            </Typography>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={() => {onClose()}}>
+            <Button onClick={() => {onClose()}}>
               Cancelar
             </Button>
-            <Button onClick={()=> {alert('salva')}}>Slavar</Button>
+            <Button onClick={()=> {alert('deleta')}}>Deletar</Button>
           </DialogActions>
         </Dialog>
       );
@@ -32,13 +35,15 @@ const Componente = ({open, onClose}) => {
 
 Componente.propType = {
     open: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    assert: PropTypes.object
 };
 
 Componente.defaultProps = {
     open: false,
     onClose: () => {
     },
+    assert: {}
 };
 
 export default Componente;

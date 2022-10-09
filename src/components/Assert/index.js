@@ -17,6 +17,8 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NewAssert from './components/DialogNewAssert';
+import EditAssert from './components/DialogEditAssert';
+import DeleteAssert from './components/DialogDeleteAssert';
 
 const fabStyle = {
   position: 'absolute',
@@ -55,106 +57,17 @@ function createData(name, calories, fat, carbs, protein, price) {
   };
 }
 
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
-        <TableCell>
-          <IconButton
-            aria-label="Lancamento"
-            size="small"
-            onClick={() => { setNewLanch(true) }}
-          >
-            <AddIcon />
-          </IconButton>
-          <IconButton
-            aria-label="Delete"
-            size="small"
-            onClick={() => { setDeleteAssert(true) }}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <IconButton
-            aria-label="Editar"
-            size="small"
-            onClick={() => { setEditAssert(true) }}
-          >
-            <EditIcon />
-          </IconButton>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Lançamentos
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Data</TableCell>
-                    <TableCell>Operação</TableCell>
-                    <TableCell align="right">Qtd</TableCell>
-                    <TableCell align="right">Preço ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">{historyRow.valor}</TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          aria-label="Delete"
-                          size="small"
-                          onClick={() => { setDeleteLaunch(true) }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-}
+const ASSERT_SELECT_VALUE = {
+  "id": undefined,
+  "nome": null
+};
 
 const Assert = () => {
 
   const [newAssert, setNewAssert] = React.useState(false);
-  const [newLaunch, setNewLanch] = React.useState(false);
   const [editAssert, setEditAssert] = React.useState(false);
-  const [deleteLaunch, setDeleteLaunch] = React.useState(false);
   const [deleteAssert, setDeleteAssert] = React.useState(false);
+  const [asserSelect, setAssertSelect] = React.useState(ASSERT_SELECT_VALUE);
 
   return (
     <React.Fragment>
@@ -164,9 +77,10 @@ const Assert = () => {
             <TableRow>
               <TableCell />
               <TableCell>Assert</TableCell>
-              <TableCell align="right">Quantidade</TableCell>
-              <TableCell align="right">PM ($)</TableCell>
               <TableCell align="right">Valor ($)</TableCell>
+              <TableCell align="right">Qtd</TableCell>
+              <TableCell align="right">PM ($)</TableCell>
+              <TableCell align="right">Investido ($)</TableCell>
               <TableCell align="right">Total ($)</TableCell>
             </TableRow>
           </TableHead>
@@ -188,28 +102,25 @@ const Assert = () => {
                   <TableCell align="right">{row.calories}</TableCell>
                   <TableCell align="right">{row.fat}</TableCell>
                   <TableCell align="right">{row.carbs}</TableCell>
+                  <TableCell align="right">{row.carbs}</TableCell>
                   <TableCell align="right">{row.protein}</TableCell>
                   <TableCell>
-                    <IconButton
-                      aria-label="Lancamento"
-                      size="small"
-                      onClick={() => { setNewLanch(true) }}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Delete"
-                      size="small"
-                      onClick={() => { setDeleteAssert(true) }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
+                  <IconButton
                       aria-label="Editar"
                       size="small"
                       onClick={() => { setEditAssert(true) }}
                     >
                       <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="Delete"
+                      size="small"
+                      onClick={() => {
+                        setAssertSelect({... {"id": row.fat, "nome": row.name} })
+                         setDeleteAssert(true) 
+                        }}
+                    >
+                      <DeleteIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -227,6 +138,15 @@ const Assert = () => {
       <NewAssert
         open={newAssert}
         onClose={() => { setNewAssert(false) }}
+      />
+      <EditAssert
+        open={editAssert}
+        onClose={() => { setEditAssert(false) }}
+      />
+      <DeleteAssert
+        open={deleteAssert}
+        onClose={() => { setDeleteAssert(false) }}
+        assert={asserSelect}
       />
     </React.Fragment>
   );
